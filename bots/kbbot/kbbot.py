@@ -12,7 +12,7 @@ from api import State, util, Deck
 import random
 from . import load
 from .kb import KB, Boolean, Integer
-from .. import mybot
+from .. import danbot
 
 class Bot:
 
