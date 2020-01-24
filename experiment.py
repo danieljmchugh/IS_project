@@ -24,22 +24,33 @@ import random
 
 # Define the bot:
 # (we're not using it with the command line tools, so we can just put it here)
+
 class Bot:
 
     # Probability of moving with non-trump cards
     __non_trump_move = 0.0
+
     def __init__(self, non_trump_move=0.0):
         self.__non_trump_move = non_trump_move
 
     def get_move(self, state):
 
+        moves = state.moves()
+        best_non_trump_card_move = best_non_trump_card(state)
+
         if random.random() < self.__non_trump_move:
 
             # IMPLEMENT: Make the best non-trump move you can. Use the best_non_trump_card method written below.
-            pass
+            return best_non_trump_card_move
 
-        #IMPLEMENT: Make a random move (but exclude the best non-trump move from above)
-        pass
+        # IMPLEMENT: Make a random move (but exclude the best non-trump move from above)
+        index = moves.index(best_non_trump_card_move)
+        del moves[index]
+
+        if len(moves) == 0:
+            return None, None
+        else:
+            return random.choice(moves)
 
 
 def empty(n):
@@ -84,8 +95,8 @@ print('Using seed {}.'.format(seed))
 random.seed(seed)
 
 # Parameters of our experiment
-STEPS = 10
-REPEATS = 5
+STEPS = 100
+REPEATS = 50
 
 inc = 1.0/STEPS
 

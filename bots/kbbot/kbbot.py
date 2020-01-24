@@ -8,10 +8,11 @@ It loads general information about the game, as well as the definition of a stra
 from load.py.
 """
 
-from api import State, util
+from api import State, util, Deck
 import random
 from . import load
 from .kb import KB, Boolean, Integer
+from .. import mybot
 
 class Bot:
 
@@ -31,6 +32,9 @@ class Bot:
                 # into account that there might be other valid moves according to the strategy.
                 # Uncomment the next line if you want to see that something happens.
                 # print "Strategy Applied"
+                print(str(Deck.get_rank(move[0]) + Deck.get_suit(move[0])), " has been played")
+                #str(Deck.get_rank(move[0]) + Deck.get_suit(move[0]))
+
                 return move
 
         # If no move that is entailed by the kb is found, play random move
@@ -60,7 +64,7 @@ class Bot:
         # Here we use "pj" to indicate that the card with index "index" should be played with the
         # PlayJack heuristics that was defined in class. Initialise a different variable if 
         # you want to apply a different strategy (that you will have to define in load.py)
-        variable_string = "pj" + str(index)
+        variable_string = "pc" + str(index)
         strategy_variable = Boolean(variable_string)
 
         # Add the relevant clause to the loaded knowledge base
