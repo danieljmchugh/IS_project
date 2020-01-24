@@ -22,6 +22,28 @@ import random
         - (int, int) : first element as above, second element completes a marriage
         - (None, int): First element being None indicates a trump jack exchange,
             second element is the index of that trump jack
+            
+    Leading:
+        if trump exchange:
+            trump exchange
+        if marriage
+            if royal marriage
+                royal marriage
+            marriage
+        if lowest non-trump move
+            lowest non-trump move
+        random
+    Follow:
+        x = other card
+        if x is high (10 or A) and non-tump
+            if tump
+                lowest trump
+        if same-suit as x
+            if higher same-suit
+                higher same suit
+        if non-trump 
+            lowest non-trump move
+        random
 """
 
 
