@@ -10,75 +10,75 @@ from argparse import ArgumentParser
 from api import State, util, engine
 import random, time
 import numpy as np
-import joblib
+import math
 from keras.models import load_model
 
+POPULATION = 15
+ELITE = 5
+N = int((POPULATION - ELITE) / ELITE)
 def run_tournament(options):
-
+    rdeep = util.load_player("rdeep")
     bots = []
-    boi1 = load_model("elite/boi1.krs").get_weights()
-    boi2 = load_model("elite/boi2.krs").get_weights()
-    boi3 = load_model("elite/boi3.krs").get_weights()
-    for x in range(0, 12):
-        bots.append(util.load_player("evo"))
-        print(bots[-1].model.get_weights()[0][8][:10])
+    for x in range(0, POPULATION):
+        bots.append([util.load_player("evo"), 0])
+        #print(bots[-1].model.get_weights()[0][8][:10])
+    for i in range(1, ELITE + 1):
+        exec ("boi" + str(i) + " = load_model(\"elite/boi" + str(i) + ".krs\").get_weights()")
+        exec ("bots[i - 1][0].set_weights(boi" + str(i) + ")")
+        pass
+    for i in range(0, POPULATION - ELITE):
+        a = eval ("np.array(boi" + str(math.ceil((i + 1) / N)) + ")")
+        for a1 in range(len(a)):
+            for a2 in range(len(a[a1])):
+                a[a1][a2] += (random.random() - 0.5) / 10**6
+        bots[i + ELITE][0].set_weights(a)
+        pass
+    for x in range(0, ELITE):
+        print(bots[x][0].model.get_weights()[0][8][:5])
+        pass
 
-    bots[0].set_weights(boi1)
-    bots[1].set_weights(boi2)
-    bots[2].set_weights(boi3)
-
-    for x in range(3, 6):
-        a = np.array(boi1)
-        b = a * (random.random() - 0.5) / 6
-        bots[x].set_weights(a + b)
-    for x in range(6, 9):
-        a = np.array(boi2)
-        b = a * (random.random() - 0.5) / 4
-        bots[x].set_weights(a + b)
-    for x in range(9, 12):
-        a = np.array(boi3)
-        b = a * (random.random() - 0.5) / 2
-        bots[x].set_weights(a + b)
     print("*******************************")
-    for x in range(0, 12):
-        print(bots[x].model.get_weights()[0][8][:10])
+    for x in range(ELITE, POPULATION):
+        print(bots[x][0].model.get_weights()[0][8][:5])
+        pass
 
     n = len(bots)
     wins = [0] * len(bots)
-    matches = [(p1, p2) for p1 in range(n) for p2 in range(n) if p1 < p2]
 
-    totalgames = (n*n - n)/2 * options.repeats
+    totalgames = POPULATION * options.repeats
     playedgames = 0
 
     print('Playing {} games:'.format(int(totalgames)))
-    for a, b in matches:
-        for r in range(options.repeats):
+    for x in range(0, len(bots)):
 
-            if random.choice([True, False]):
-                p = [a, b]
-            else:
-                p = [b, a]
-
+        for j in range(0, options.repeats):
             # Generate a state with a random seed
-            state = State.generate(phase=int(options.phase))
+            state = State.generate(id=56, phase=int(options.phase))
 
-            winner, score = engine.play(bots[p[0]], bots[p[1]], state, options.max_time*1000, verbose=False, fast=options.fast)
+            winner, score = engine.play(bots[x][0], rdeep, state, options.max_time*1000, verbose=False, fast=options.fast)
+
 
             if winner is not None:
-                winner = p[winner - 1]
-                wins[winner] += score
+                if state.revoked():
+                    bots[x][1] -= 100
+                print(bots[x][0].turns)
+                bots[x][0].turns = 0
+                if winner == 1:
+                    bots[x][1] += score * 100
 
+            for i in range(0, len(bots)):
+                wins[i] = bots[i][1]
             playedgames += 1
             print('Played {} out of {:.0f} games ({:.0f}%): {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins))
 
-    cutoff = sorted(wins)[-3]
-    print(cutoff)
+    bots = sorted(bots, key= lambda x: x[1])
+    print("Average: " + str(sum(wins) / len(wins)))
     print('Results:')
     j = 1
     for i in range(len(bots)):
-        print('    bot {}: {} points'.format(bots[i], wins[i]))
-        if wins[i] >= cutoff:
-            bots[i].model.save("elite/boi" + str(j) + ".krs")
+        print('    bot {}: {} points'.format(bots[i][0], bots[i][1]))
+        if i >= len(bots) - ELITE:
+            bots[i][0].model.save("elite/boi" + str(j) + ".krs")
             j += 1
 
 if __name__ == "__main__":
@@ -113,4 +113,5 @@ if __name__ == "__main__":
 
     options = parser.parse_args()
 
-    run_tournament(options)
+    for x in range(0, 1):
+        run_tournament(options)

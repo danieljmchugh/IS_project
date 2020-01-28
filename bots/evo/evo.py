@@ -5,6 +5,7 @@ uniformly at random.
 # Import the API objects
 from api import State
 import random
+from keras import initializers
 from keras.models import load_model, Sequential
 from keras.layers import Dense
 import numpy as np
@@ -13,15 +14,12 @@ import time
 class Bot:
 
     def __init__(self):
-        self.model = Sequential()
-        self.model.add(Dense(600, input_shape=(20, ), activation="relu"))
-        self.model.add(Dense(500, activation="relu"))
-        self.model.add(Dense(20, activation="relu"))
-        # model.summary()
-        self.model.compile(loss='binary_crossentropy', optimizer="Adam", metrics=['accuracy'])
+        self.model = load_model("start_bot.krs")
+        self.turns = 0
 
     depth = 0
     own_id = 0
+    __max_depth = 20
     def set_weights(self, weights):
         self.model.set_weights(weights)
 
@@ -45,8 +43,10 @@ class Bot:
         if state.get_phase() == 2:
             val, move = self.value(state)
             return move
-
         return (self.eval(state), None)
+
+    def get_turns(self):
+        return self.turns
 
     def eval(self, state):
         input = np.zeros((20, 1))
@@ -76,9 +76,6 @@ class Bot:
             return heuristic(state)
 
         moves = state.moves()
-
-        if self.__randomize:
-            random.shuffle(moves)
 
         best_value = float('-inf') if maximizing(state) else float('inf')
         best_move = None
