@@ -290,8 +290,8 @@ class State:
 
 		rng = random.Random(id)
 		deck = Deck.generate(id)
-		player1s_turn = rng.choice([True])
-		# player1s_turn = rng.choice([True, False])
+		#player1s_turn = rng.choice([True])
+		player1s_turn = rng.choice([True, False])
 		state = State(deck, player1s_turn)
 
 		if phase == 2:

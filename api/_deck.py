@@ -247,7 +247,7 @@ class Deck:
 			[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19]		# all trumps (player 2, clubs), TODO: redo this one
 		]
 		# redefine cards here
-		shuffled_cards = defined_cards_states[2]
+		# shuffled_cards = defined_cards_states[2]
 
 		card_state = [0]*20
 		p1_perspective = ["U"]*20
