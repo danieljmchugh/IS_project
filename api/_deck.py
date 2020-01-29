@@ -231,14 +231,32 @@ class Deck:
 		shuffled_cards = list(range(20))
 		rng.shuffle(shuffled_cards)
 
+		# god help me
+		cards = list(range(20))
+		rng.shuffle(cards)
+		no_aces = [e for e in cards if e not in (0, 5, 10, 15, 19)]
+		no_jacks = [e for e in cards if e not in (4, 9, 14, 19)]
+		two_marriages = [e for e in cards if e not in (2, 3, 7, 8)]
+		# trump marriage =
+
+		defined_cards_states = [
+			no_jacks + [4, 9, 14, 19],		# all jacks (player 2)
+			no_aces + [0, 5, 10, 15, 19],		# all aces (player 2)
+			two_marriages + [2, 3, 7, 8],		# two marriages (player2, clubs/diamonds)
+			list(range(5, 20)) + [0, 1, 2, 3, 4],		# all same suit (player2, clubs)
+			[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19]		# all trumps (player 2, clubs), TODO: redo this one
+		]
+		# redefine cards here
+		shuffled_cards = defined_cards_states[2]
+
 		card_state = [0]*20
 		p1_perspective = ["U"]*20
 		p2_perspective = ["U"]*20
 		stock = [] # Can be thought of as a stack data structure.
 
 		# First card of stock is trump card, face up known by both players
+		# p1_perspective[shuffled_cards[0]] = p2_perspective[shuffled_cards[0]] = "S"
 		p1_perspective[shuffled_cards[0]] = p2_perspective[shuffled_cards[0]] = "S"
-
 		# Three separate for loops assign a state to the cards in the
 		# shuffled deck depending on their position. The indices of the
 		# stock cards are pushed onto the stock stack to save their order.

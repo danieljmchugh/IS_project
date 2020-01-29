@@ -46,8 +46,6 @@ import random
         random
 """
 
-
-
 class Bot:
 
     def __init__(self):
@@ -68,7 +66,7 @@ class Bot:
         """
         print()
         player_id = state.whose_turn()
-        print("points: " + str(state.get_points(player_id)))
+        print("player: " + str(player_id) + " points: " + str(state.get_points(player_id)))
         player_hand = state.hand()
         print(player_hand)
         print_hand(player_hand)
