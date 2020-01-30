@@ -20,6 +20,7 @@ def run_tournament(options):
 
     totalgames = (n*n - n)/2 * options.repeats
     playedgames = 0
+    totalpoints = 0
 
     print('Playing {} games:'.format(int(totalgames)))
     for a, b in matches:
@@ -39,13 +40,15 @@ def run_tournament(options):
                 winner = p[winner - 1]
                 wins[winner] += score
                 ranks[winner] += 1
+                totalpoints += score
 
             playedgames += 1
             #print('Played {} out of {:.0f} games ({:.0f}%): {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins))
 
     for i in range(len(bots)):
-        ranks[i] = wins[i]/(totalgames)
-        print('    bot {}: {} points, {} rank'.format(bots[i], wins[i], ranks[i]))
+        ranks[i] = wins[i]/(totalpoints)
+        #ranks[i] = ranks[i]/(totalgames) # i think points are more important than just games won
+        print('    bot {}: {} points, {:04.2f} rank'.format(bots[i], wins[i], ranks[i]))
 
 
 
