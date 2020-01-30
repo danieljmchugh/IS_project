@@ -29,7 +29,7 @@ def run_tournament(options):
             # p = [a, b]  # first starts
             # p = [b, a]  # second starts
 
-            # add starting_state argument here
+            # add starting_state argument here, most of them apply to second player
             starting_state = None  # None, one_marriage, two marriage, all_jacks, all_aces, same_suit, all_ace_jack
             state = State.generate(phase=int(options.phase), starting_state=starting_state)
 
