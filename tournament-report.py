@@ -25,9 +25,9 @@ def run_tournament(options):
     for a, b in matches:
         for r in range(options.repeats):
 
-            p = [a, b] if random.choice([True, False]) else [b, a]  # randomly chooses who starts
-            # p = [a, b]  # first starts
-            # p = [b, a]  # second starts
+            p = [a, b] if random.choice([True, False]) else [b, a] # randomly chooses who starting_state applies to
+            # p = [a, b]  # starting state applied to second player
+            #p = [b, a]  # starting state applied to first player
 
             # add starting_state argument here, most of them apply to second player
             starting_state = None  # None, one_marriage, two marriage, all_jacks, all_aces, same_suit, all_ace_jack
