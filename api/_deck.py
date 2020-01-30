@@ -237,15 +237,23 @@ class Deck:
 
 		aces = [0, 5, 10, 15]
 		jacks = [4, 9, 14, 19]
+		marriages = [
+			[2, 3],		 # clubs
+			[7, 8],		 # diamonds
+			[12, 13],	 # heats
+			[17, 18]	 # spades
+		]
 
 		no_aces = [e for e in cards if e not in aces]
 		no_jacks = [e for e in cards if e not in jacks]
 		two_marriages = [e for e in cards if e not in (2, 3, 7, 8)]
+		one_marriage = [e for e in cards if e not in rng.choice(marriages)]
 		# trump marriage =
 
 
 
 		defined_cards_states = [
+			one_marriage + rng.choice(marriages),		# random marriage (p2) (TODO: test)
 			no_jacks + jacks,		# all jacks (player 2)
 			no_aces + aces,		# all aces (player 2)
 			two_marriages + [2, 3, 7, 8],		# two marriages (player2, clubs/diamonds)
