@@ -247,13 +247,13 @@ class Deck:
 		no_aces = [e for e in cards if e not in aces]
 		no_jacks = [e for e in cards if e not in jacks]
 		two_marriages = [e for e in cards if e not in (2, 3, 7, 8)]
-		one_marriage = [e for e in cards if e not in rng.choice(marriages)]
+		one_marriage = [e for e in cards if e not in marriages[0]]  	# clubs
 		# trump marriage =
 
 
 
 		defined_cards_states = [
-			one_marriage + rng.choice(marriages),		# random marriage (p2) (TODO: test)
+			one_marriage + marriages[0],		# random marriage (p2) (TODO: test)
 			no_jacks + jacks,		# all jacks (player 2)
 			no_aces + aces,		# all aces (player 2)
 			two_marriages + [2, 3, 7, 8],		# two marriages (player2, clubs/diamonds)
@@ -262,7 +262,7 @@ class Deck:
 			[e for e in cards if e not in aces and e not in jacks][:-2] + aces + [e for e in cards if e not in aces and e not in jacks][-2:] +jacks #all aces for player 1 and jacks for player 2
 		]
 		# redefine cards here
-		# shuffled_cards = defined_cards_states[5]
+		shuffled_cards = defined_cards_states[1]
 
 		card_state = [0]*20
 		p1_perspective = ["U"]*20

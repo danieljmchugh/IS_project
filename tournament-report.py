@@ -1,10 +1,4 @@
 #!usr/bin/env python
-"""
-A command line program for multiple games between several bots.
-
-For all the options run
-python play.py -h
-"""
 
 from argparse import ArgumentParser
 from api import State, util, engine
@@ -31,10 +25,9 @@ def run_tournament(options):
     for a, b in matches:
         for r in range(options.repeats):
 
-            if random.choice([True, False]):
-                p = [a, b]
-            else:
-                p = [b, a]
+            p = [a, b] if random.choice([True, False]) else [b, a]  # randomly chooses who starts
+            # p = [a, b]  # first starts
+            # p = [b, a]  # second starts
 
             # Generate a state with a random seed
             state = State.generate(phase=int(options.phase))
@@ -47,7 +40,7 @@ def run_tournament(options):
                 ranks[winner] += 1
 
             playedgames += 1
-            print('Played {} out of {:.0f} games ({:.0f}%): {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins))
+            #print('Played {} out of {:.0f} games ({:.0f}%): {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins))
 
     for i in range(len(bots)):
         ranks[i] = wins[i]/(totalgames)
