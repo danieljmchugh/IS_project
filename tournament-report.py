@@ -27,7 +27,7 @@ def run_tournament(options):
         for r in range(options.repeats):
 
             p = [a, b] if random.choice([True, False]) else [b, a] # randomly chooses who starting_state applies to
-            # p = [a, b]  # starting state applied to second player
+            #p = [a, b]  # starting state applied to second player
             #p = [b, a]  # starting state applied to first player
 
             # add starting_state argument here, most of them apply to second player

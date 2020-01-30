@@ -64,24 +64,25 @@ class Bot:
             indicating a move; the first indicates the card played in the trick, the second a
             potential spouse.
         """
-        print()
         player_id = state.whose_turn()
-        print("player: " + str(player_id) + " points: " + str(state.get_points(player_id)))
         player_hand = state.hand()
-        print(player_hand)
-        print_hand(player_hand)
         moves = state.moves()
+
+        # print()
+        # print("player: " + str(player_id) + " points: " + str(state.get_points(player_id)))
+        # print(player_hand)
+        # print_hand(player_hand)
 
         # leading trick
         if state.get_opponents_played_card() is None:
-            print("leading trick")
+            #print("leading trick")
 
             # check trump swap:
             #  (None, int): First element being None indicates a trump jack exchange,
             #             second element is the index of that trump jack
             for move in moves:
                 if move[0] is None and isinstance(move[1], int):
-                    print("move: Trump swap")
+                    #print("move: Trump swap")
                     return move
 
             # check marriage:
@@ -90,38 +91,38 @@ class Bot:
             # check royal marriage
             for move in possible_marriages:
                 if Deck.get_suit(move[0]) == state.get_trump_suit():
-                    print("move: Royal marriage")
+                    #print("move: Royal marriage")
                     return move
             # else return random marriage if exists
             if possible_marriages:
-                print("move: Normal marriage")
+                #print("move: Normal marriage")
                 return random.choice(possible_marriages)
 
             # play lowest, non-trump jack
             #   (int, None): first element indicates the index of the card that is placed down.
             non_trump_moves = get_non_trump_moves(state, moves)
             if non_trump_moves:
-                print("move: Smallest non-trump")
+                #print("move: Smallest non-trump")
                 return get_lowest_value_move(non_trump_moves)
                 #print("move: Highest non-trump")
                 #return get_highest_value_move(non_trump_moves)
 
             # play random
-            print("move: Random move")
+            #print("move: Random move")
             return random.choice(moves)
 
         # following trick
         else:
-            print("following trick")
+            #print("following trick")
             played_card = state.get_opponents_played_card()
-            print("other card: ", end="")
-            print_card(played_card)
+            #print("other card: ", end="")
+            #print_card(played_card)
 
             # if high rank and non-trump
             if Deck.get_rank(played_card) == "10" or "A" and Deck.get_suit(played_card) != state.get_trump_suit():
                 trump_moves = get_trump_moves(state, moves)
                 if trump_moves:
-                    print("reply: Smallest trump card")
+                    #print("reply: Smallest trump card")
                     return get_lowest_value_move(trump_moves)
 
             # play higher same suit
@@ -129,16 +130,16 @@ class Bot:
             if same_suit_moves:
                 higher_value_move = get_higher_value_move(same_suit_moves, played_card)
                 if higher_value_move:
-                    print("reply: Higher same suit ", end="")
-                    print_card(higher_value_move[0])
+                    #print("reply: Higher same suit ", end="")
+                    #print_card(higher_value_move[0])
                     return higher_value_move
             # minimize loss
             non_trump_moves = get_non_trump_moves(state, moves)
             if non_trump_moves:
-                print("reply: Smallest non-trump")
+                #print("reply: Smallest non-trump")
                 return get_lowest_value_move(non_trump_moves)
 
-            print("reply: Random move")
+            #print("reply: Random move")
             return random.choice(moves)
 
 
