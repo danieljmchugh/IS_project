@@ -234,20 +234,27 @@ class Deck:
 		# god help me
 		cards = list(range(20))
 		rng.shuffle(cards)
-		no_aces = [e for e in cards if e not in (0, 5, 10, 15, 19)]
-		no_jacks = [e for e in cards if e not in (4, 9, 14, 19)]
+
+		aces = [0, 5, 10, 15]
+		jacks = [4, 9, 14, 19]
+
+		no_aces = [e for e in cards if e not in aces]
+		no_jacks = [e for e in cards if e not in jacks]
 		two_marriages = [e for e in cards if e not in (2, 3, 7, 8)]
 		# trump marriage =
 
+
+
 		defined_cards_states = [
-			no_jacks + [4, 9, 14, 19],		# all jacks (player 2)
-			no_aces + [0, 5, 10, 15, 19],		# all aces (player 2)
+			no_jacks + jacks,		# all jacks (player 2)
+			no_aces + aces,		# all aces (player 2)
 			two_marriages + [2, 3, 7, 8],		# two marriages (player2, clubs/diamonds)
 			list(range(5, 20)) + [0, 1, 2, 3, 4],		# all same suit (player2, clubs)
-			[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19]		# all trumps (player 2, clubs), TODO: redo this one
+			[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19],		# all trumps (player 2, clubs), TODO: redo this one
+			[e for e in cards if e not in aces and e not in jacks][:-2] + aces + [e for e in cards if e not in aces and e not in jacks][-2:] +jacks #all aces for player 1 and jacks for player 2
 		]
 		# redefine cards here
-		# shuffled_cards = defined_cards_states[2]
+		# shuffled_cards = defined_cards_states[5]
 
 		card_state = [0]*20
 		p1_perspective = ["U"]*20
