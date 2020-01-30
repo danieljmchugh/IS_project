@@ -281,7 +281,7 @@ class State:
 		return state
 
 	@staticmethod
-	def generate(id=None, phase=1):
+	def generate(id=None, phase=1, starting_state=None):
 		"""
 		:param id: The seed used for random generation. Defaults at random, but can be set for deterministic state generation
 		:param phase: The phase at which your generated state starts at
@@ -289,8 +289,8 @@ class State:
 		"""
 
 		rng = random.Random(id)
-		deck = Deck.generate(id)
-		#player1s_turn = rng.choice([True])
+		deck = Deck.generate(id, starting_state)
+		# player1s_turn = rng.choice([True])
 		player1s_turn = rng.choice([True, False])
 		state = State(deck, player1s_turn)
 

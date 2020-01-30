@@ -29,8 +29,9 @@ def run_tournament(options):
             # p = [a, b]  # first starts
             # p = [b, a]  # second starts
 
-            # TODO: add starting state argument
-            state = State.generate(phase=int(options.phase))
+            # add starting_state argument here
+            starting_state = None  # None, one_marriage, two marriage, all_jacks, all_aces, same_suit, all_ace_jack
+            state = State.generate(phase=int(options.phase), starting_state=starting_state)
 
             winner, score = engine.play(bots[p[0]], bots[p[1]], state, options.max_time*1000, verbose=False, fast=options.fast)
 

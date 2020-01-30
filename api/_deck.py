@@ -225,7 +225,7 @@ class Deck:
 	#Look into overloading this function as well
 	# Generates a new deck based on a seed. If no seed is given, a random seed in generated.
 	@staticmethod
-	def generate(id=None):
+	def generate(id=None, starting_state=None):
 
 		rng = random.Random(id)
 		shuffled_cards = list(range(20))
@@ -248,9 +248,9 @@ class Deck:
 		no_jacks = [e for e in cards if e not in jacks]
 		two_marriages = [e for e in cards if e not in (2, 3, 7, 8)]
 		one_marriage = [e for e in cards if e not in marriages[0]]  	# clubs
-		# trump marriage =
 
 		defined_cards_states = [
+			shuffled_cards,		# no changes
 			one_marriage + marriages[0],		# random marriage (p2, clubs)
 			two_marriages + marriages[0] + marriages[1],  # two marriages (player2, clubs/diamonds)
 			no_jacks + jacks,		# all jacks (player 2)
@@ -260,8 +260,19 @@ class Deck:
 			# [4] + [e for e in cards if e not in (1, 2, 3)] + [1, 2, 3],	 # all trump (clubs) # TODO: doesnt work
 			[e for e in cards if e not in aces and e not in jacks][:-2] + aces + [e for e in cards if e not in aces and e not in jacks][-2:] +jacks #all aces for player 1 and jacks for player 2
 		]
+
 		# redefine cards here
-		# shuffled_cards = defined_cards_states[5]
+		def set_defined_state(state):
+			return {
+				"one_marriage": 1,
+				"two_marriage": 2,
+				"all_jacks": 3,
+				"all_aces": 4,
+				"same_suit": 5,
+				"all_ace_jack": 6
+			}.get(state, 0)  # default to no changes if no argument
+
+		shuffled_cards = defined_cards_states[set_defined_state(starting_state)]
 
 		card_state = [0]*20
 		p1_perspective = ["U"]*20
