@@ -250,19 +250,18 @@ class Deck:
 		one_marriage = [e for e in cards if e not in marriages[0]]  	# clubs
 		# trump marriage =
 
-
-
 		defined_cards_states = [
-			one_marriage + marriages[0],		# random marriage (p2) (TODO: test)
+			one_marriage + marriages[0],		# random marriage (p2, clubs)
+			two_marriages + marriages[0] + marriages[1],  # two marriages (player2, clubs/diamonds)
 			no_jacks + jacks,		# all jacks (player 2)
 			no_aces + aces,		# all aces (player 2)
-			two_marriages + [2, 3, 7, 8],		# two marriages (player2, clubs/diamonds)
 			list(range(5, 20)) + [0, 1, 2, 3, 4],		# all same suit (player2, clubs)
-			[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19],		# all trumps (player 2, clubs), TODO: redo this one
+			# [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 14, 0, 1, 2, 3, 19],		# all trumps (player 2, clubs), TODO: redo this one
+			# [4] + [e for e in cards if e not in (1, 2, 3)] + [1, 2, 3],	 # all trump (clubs) # TODO: doesnt work
 			[e for e in cards if e not in aces and e not in jacks][:-2] + aces + [e for e in cards if e not in aces and e not in jacks][-2:] +jacks #all aces for player 1 and jacks for player 2
 		]
 		# redefine cards here
-		shuffled_cards = defined_cards_states[1]
+		# shuffled_cards = defined_cards_states[5]
 
 		card_state = [0]*20
 		p1_perspective = ["U"]*20

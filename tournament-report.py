@@ -29,7 +29,7 @@ def run_tournament(options):
             # p = [a, b]  # first starts
             # p = [b, a]  # second starts
 
-            # Generate a state with a random seed
+            # TODO: add starting state argument
             state = State.generate(phase=int(options.phase))
 
             winner, score = engine.play(bots[p[0]], bots[p[1]], state, options.max_time*1000, verbose=False, fast=options.fast)
